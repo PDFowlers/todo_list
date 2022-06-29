@@ -1,3 +1,4 @@
+from cgitb import text
 from tkinter import *
 from tkinter import messagebox
 from tkinter import ttk
@@ -34,7 +35,7 @@ frame.pack(pady=10)
 lb = Listbox(
     frame,
     width=22,
-    height=13,
+    height=8,
     bd=0,
     foreground='#464646',
     highlightthickness=0,
@@ -120,6 +121,36 @@ delTask_btn = Button(
     style='Del_Task.TButton'
 )
 delTask_btn.pack(fill=BOTH, expand=True, side=LEFT)
+
+# creating the 3 entry fields for the timer
+
+timer_frame = Frame(todo)
+timer_frame.pack(pady=5) 
+
+hr_label_style = Style()
+hr_label_style.configure('Hr_Label.TLabel', background='DeepSkyBlue', font=('times, 12'))
+hr_label = Label(timer_frame, style = 'Hr_Label.TLabel', text = 'hours')
+hr_label.pack(side=LEFT)
+hours = StringVar()
+hr_entry = Entry(timer_frame, textvariable=hours, width=2, font=('times, 12'))
+hr_entry.pack(side=LEFT)
+
+min_label_style = Style()
+min_label_style.configure('Min_Label.TLabel', background='DeepSkyBlue', font=('times, 12'))
+min_label = Label(timer_frame, style='Min_Label.TLabel', text='min', background='DeepSkyBlue')
+min_label.pack(side=LEFT)
+min = StringVar()
+min_entry = Entry(timer_frame, textvariable=min, width=2, font=('times, 12'))
+min_entry.pack(side=LEFT)
+
+sec_label_style = Style()
+sec_label_style.configure('Sec_Label.TLabel', background='DeepSkyBlue', font=('times, 12'))
+sec_label = Label(timer_frame, style='Sec_Label.TLabel', text='sec', background='DeepSkyBlue')
+sec_label.pack(side=LEFT)
+sec = StringVar()
+sec_entry = Entry(timer_frame, textvariable=sec, width=2, font=('times, 12'))
+
+sec_entry.pack(side=LEFT)
 
 
 if __name__ == '__main__':
