@@ -3,6 +3,7 @@ from tkinter import *
 from tkinter import messagebox
 from tkinter import ttk
 from tkinter.ttk import *
+import time
 
 # todo_list.py will launch an application that can be used as a to-do list
 # the application will store tasks or items to remember, sorted by priority, and have alarms to remind the user of certain tasks
@@ -12,13 +13,41 @@ from tkinter.ttk import *
 def newTask():
     task = my_entry.get()
     if task != "":
-        lb.insert(END, task + str(timer_on.get()))
+        lb.insert(END, task)
         my_entry.delete(0, "end")
+        countdowntimer()
     else:
         messagebox.showwarning("warning", "Please enter some task.")
 
 def deleteTask():
     lb.delete(ANCHOR)
+
+def countdowntimer():
+    init_sec = int(sec.get())
+    init_min = int(min.get())
+    init_hours = int(hours.get())
+    times = int(hours.get())*3600+ int(min.get())*60 + int(sec.get())
+    while times > -1:
+        minute,second = (times // 60 , times % 60)
+        hour =0
+        if minute > 60:
+            hour , minute = (minute // 60 , minute % 60)
+        sec.set(second)
+        min.set(minute)
+        hours.set(hour)
+        #Update the time
+        todo.update()
+        time.sleep(1)
+        if(times == 0):
+            if recurring_on.get() == 1:
+                sec.set(init_sec)
+                min.set(init_min)
+                hours.set(init_hours)
+                countdowntimer()
+            sec.set('00')
+            min.set('00')
+            hours.set('00')
+        times -= 1
 
 # initial Tk instance setup
 todo = Tk()
@@ -58,28 +87,6 @@ my_entry = Entry(
     )
 
 my_entry.pack(pady=5)
-
-# this checkbox will enable the use of a timer to remind the user to complete the task
-timercheck_style = ttk.Style()
-timercheck_style.configure(
-    'Timercheck.TCheckbutton',
-    foreground='black',
-    background='DeepSkyBlue'
-)
-timer_check = Frame(todo)
-timer_check.pack(pady=5)
-timer_on = IntVar()
-
-timer_checkbox = Checkbutton(
-    timer_check,
-    text='Add Timer',
-    variable=timer_on,
-    onvalue=1,
-    offvalue=0,
-    style='Timercheck.TCheckbutton'
-)
-
-timer_checkbox.pack()
 
 # add and delete task buttons to call their respctive functions on tasks in the entry area or the listbox area
 
@@ -149,9 +156,33 @@ sec_label = Label(timer_frame, style='Sec_Label.TLabel', text='sec', background=
 sec_label.pack(side=LEFT)
 sec = StringVar()
 sec_entry = Entry(timer_frame, textvariable=sec, width=2, font=('times, 12'))
-
 sec_entry.pack(side=LEFT)
 
+sec.set('00')
+min.set('00')
+hours.set('00')
+
+# this checkbox will enable the use of a timer to remind the user to complete the task
+make_recurring = ttk.Style()
+make_recurring.configure(
+    'Recurring.TCheckbutton',
+    foreground='black',
+    background='DeepSkyBlue'
+)
+recurring_check = Frame(todo)
+recurring_check.pack(pady=5)
+recurring_on = IntVar()
+
+recurring_checkbox = Checkbutton(
+    recurring_check,
+    text='Make Recurring',
+    variable=recurring_on,
+    onvalue=1,
+    offvalue=0,
+    style='Recurring.TCheckbutton'
+)
+
+recurring_checkbox.pack()
 
 if __name__ == '__main__':
     todo.mainloop()
