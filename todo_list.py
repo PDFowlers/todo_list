@@ -15,7 +15,6 @@ def newTask():
     if task != "":
         lb.insert(END, task)
         my_entry.delete(0, "end")
-        countdowntimer()
     else:
         messagebox.showwarning("warning", "Please enter some task.")
 
@@ -49,6 +48,10 @@ def countdowntimer():
             hours.set('00')
         times -= 1
 
+def reset_timer():
+    sec.set('00')
+    min.set('00')
+    hours.set('00')
 # initial Tk instance setup
 todo = Tk()
 todo.geometry('300x500+0+0')
@@ -162,7 +165,7 @@ sec.set('00')
 min.set('00')
 hours.set('00')
 
-# this checkbox will enable the use of a timer to remind the user to complete the task
+# this checkbox will allow the timer to automatically reset to the start every time it ends, allowing instant re-use of the same timer
 make_recurring = ttk.Style()
 make_recurring.configure(
     'Recurring.TCheckbutton',
@@ -183,6 +186,47 @@ recurring_checkbox = Checkbutton(
 )
 
 recurring_checkbox.pack()
+
+# start and stop buttons for the timer
+
+button_frame = Frame(todo)
+button_frame.pack(pady=5)
+
+start_timer_style = ttk.Style()
+# add_task_style.theme_use('default')
+start_timer_style.configure(
+    'Start.TButton',
+    background='green2',
+    font=('times 14'),
+    padx=20,
+    pady=10,
+    relief='raised',
+    bordercolor='green2'
+)
+# add_task_style.map('Add_Task.TButton', background=[('active','green2')])
+start_timer = Button(
+    button_frame,
+    text='Start Timer',
+    command=countdowntimer,
+    style='Start.TButton'
+)
+start_timer.pack(fill=BOTH, expand=True, side=LEFT)
+
+reset_timer_style = ttk.Style()
+reset_timer_style.configure(
+    'Reset.TButton',
+    background='red',
+    font=('times 14'),
+    padx=20,
+    pady=10
+)
+reset_timer = Button(
+    button_frame,
+    text='Reset Timer',
+    command=reset_timer,
+    style='Reset.TButton'
+)
+reset_timer.pack(fill=BOTH, expand=True, side=LEFT)
 
 if __name__ == '__main__':
     todo.mainloop()
