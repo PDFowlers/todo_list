@@ -4,6 +4,7 @@ from tkinter import messagebox
 from tkinter import ttk
 from tkinter.ttk import *
 import time
+from threading import Thread
 
 # todo_list.py will launch an application that can be used as a to-do list
 # the application will store tasks or items to remember, sorted by priority, and have alarms to remind the user of certain tasks
@@ -27,6 +28,8 @@ def countdowntimer():
     init_hours = int(hours.get())
     times = int(hours.get())*3600+ int(min.get())*60 + int(sec.get())
     while times > -1:
+        if timer_on != True:
+            break
         minute,second = (times // 60 , times % 60)
         hour =0
         if minute > 60:
@@ -48,10 +51,20 @@ def countdowntimer():
             hours.set('00')
         times -= 1
 
+def start_timer():
+    global timer_on
+    timer_on = True
+    timer_start = Thread(target=countdowntimer)
+    timer_start.start()
+
+
 def reset_timer():
+    global timer_on
+    timer_on = False
     sec.set('00')
     min.set('00')
     hours.set('00')
+
 # initial Tk instance setup
 todo = Tk()
 todo.geometry('300x500+0+0')
@@ -207,7 +220,7 @@ start_timer_style.configure(
 start_timer = Button(
     button_frame,
     text='Start Timer',
-    command=countdowntimer,
+    command=start_timer,
     style='Start.TButton'
 )
 start_timer.pack(fill=BOTH, expand=True, side=LEFT)
