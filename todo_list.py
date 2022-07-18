@@ -1,3 +1,4 @@
+import task_list
 from cgitb import text
 from tkinter import *
 from tkinter import messagebox
@@ -5,6 +6,8 @@ from tkinter import ttk
 from tkinter.ttk import *
 import time
 from threading import Thread
+
+
 
 # todo_list.py will launch an application that can be used as a to-do list
 # the application will store tasks or items to remember, sorted by priority, and have alarms to remind the user of certain tasks
@@ -14,13 +17,13 @@ from threading import Thread
 def newTask():
     task = my_entry.get()
     if task != "":
-        lb.insert(END, task)
+        task_list.insert(END, task)
         my_entry.delete(0, "end")
     else:
         messagebox.showwarning("warning", "Please enter some task.")
 
 def deleteTask():
-    lb.delete(ANCHOR)
+    task_list.delete(ANCHOR)
 
 def countdowntimer():
     init_sec = int(sec.get())
@@ -77,24 +80,24 @@ frame.pack(pady=10)
 
 # listbox that will present all the tasks on the list
 
-lb = Listbox(
-    frame,
-    width=22,
-    height=8,
-    bd=0,
-    foreground='#464646',
-    highlightthickness=0,
-    selectbackground = '#a6a6a6',
-    activestyle='none',
-    font=('Times', 18)
-)
-lb.pack(side=LEFT, fill=BOTH)
+# task_list = Listbox(
+#     frame,
+#     width=22,
+#     height=8,
+#     bd=0,
+#     foreground='#464646',
+#     highlightthickness=0,
+#     selectbackground = '#a6a6a6',
+#     activestyle='none',
+#     font=('Times', 18)
+# )
+task_list.task_list.pack(side=LEFT, fill=BOTH)
 
 sb = Scrollbar(frame)
 sb.pack(side=RIGHT, fill=BOTH)
 
-lb.config(yscrollcommand=sb.set)
-sb.config(command=lb.yview)
+task_list.task_list.config(yscrollcommand=sb.set)
+sb.config(command=task_list.task_list.yview)
 
 # task entry area
 my_entry = Entry(
