@@ -1,7 +1,9 @@
 from tkinter import *
 
 #task_list.py houses the listbox settings for todo_list.py
+
 frame=Frame()
+
 task_list = Listbox(
     frame,
     width=22,
@@ -13,6 +15,3 @@ task_list = Listbox(
     activestyle='none',
     font=('Times', 18)
 )
-
-if __name__ == '__main__':
-    todo.mainloop()
