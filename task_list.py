@@ -2,16 +2,17 @@ from tkinter import *
 
 #task_list.py houses the listbox settings for todo_list.py
 
-frame=Frame()
+def task_list_gen(frame):
 
-task_list = Listbox(
-    frame,
-    width=22,
-    height=8,
-    bd=0,
-    foreground='#464646',
-    highlightthickness=0,
-    selectbackground = '#a6a6a6',
-    activestyle='none',
-    font=('Times', 18)
-)
+    task_list = Listbox(
+        frame,
+        width=22,
+        height=8,
+        bd=0,
+        foreground='#464646',
+        highlightthickness=0,
+        selectbackground = '#a6a6a6',
+        activestyle='none',
+        font=('Times', 18)
+    )
+    return task_list

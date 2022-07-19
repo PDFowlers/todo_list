@@ -17,13 +17,13 @@ from threading import Thread
 def newTask():
     task = my_entry.get()
     if task != "":
-        task_list.insert(END, task)
+        task_list_widget.insert(END, task)
         my_entry.delete(0, "end")
     else:
         messagebox.showwarning("warning", "Please enter some task.")
 
 def deleteTask():
-    task_list.delete(ANCHOR)
+    task_list_widget.delete(ANCHOR)
 
 def countdowntimer():
     init_sec = int(sec.get())
@@ -75,29 +75,15 @@ todo.title('To Do List')
 todo.config(bg = 'DeepSkyBlue')
 todo.resizable(width=True, height=True)
 
-frame = Frame(todo)
-frame.pack(pady=10)
-
-# listbox that will present all the tasks on the list
-
-# task_list = Listbox(
-#     frame,
-#     width=22,
-#     height=8,
-#     bd=0,
-#     foreground='#464646',
-#     highlightthickness=0,
-#     selectbackground = '#a6a6a6',
-#     activestyle='none',
-#     font=('Times', 18)
-# )
-task_list.task_list.pack(side=LEFT, fill=BOTH)
-
-sb = Scrollbar(frame)
+# task list + scrollbar palcement
+task_list_frame = Frame(todo)
+task_list_frame.pack(pady=10)
+task_list_widget = task_list.task_list_gen(task_list_frame)
+task_list_widget.pack(side=LEFT, fill=BOTH)
+sb = Scrollbar(task_list_frame)
 sb.pack(side=RIGHT, fill=BOTH)
-
-task_list.task_list.config(yscrollcommand=sb.set)
-sb.config(command=task_list.task_list.yview)
+task_list_widget.config(yscrollcommand=sb.set)
+sb.config(command=task_list_widget.yview)
 
 # task entry area
 my_entry = Entry(
