@@ -1,5 +1,6 @@
 import task_list
 import task_buttons
+import timer_entry
 from cgitb import text
 from tkinter import *
 from tkinter import messagebox
@@ -112,28 +113,23 @@ delTask_btn.pack(fill=BOTH, expand=True, side=LEFT)
 timer_frame = Frame(todo)
 timer_frame.pack(pady=5) 
 
-hr_label_style = Style()
-hr_label_style.configure('Hr_Label.TLabel', background='DeepSkyBlue', font=('times, 12'))
-hr_label = Label(timer_frame, style = 'Hr_Label.TLabel', text = 'hours')
+
+hr_label = timer_entry.hr_label_gen(timer_frame)
 hr_label.pack(side=LEFT)
 hours = StringVar()
-hr_entry = Entry(timer_frame, textvariable=hours, width=2, font=('times, 12'))
+hr_entry = timer_entry.hr_entry_gen(timer_frame, hours)
 hr_entry.pack(side=LEFT)
 
-min_label_style = Style()
-min_label_style.configure('Min_Label.TLabel', background='DeepSkyBlue', font=('times, 12'))
-min_label = Label(timer_frame, style='Min_Label.TLabel', text='min', background='DeepSkyBlue')
+min_label = timer_entry.min_label_gen(timer_frame)
 min_label.pack(side=LEFT)
 min = StringVar()
-min_entry = Entry(timer_frame, textvariable=min, width=2, font=('times, 12'))
+min_entry = timer_entry.min_entry_gen(timer_frame, min)
 min_entry.pack(side=LEFT)
 
-sec_label_style = Style()
-sec_label_style.configure('Sec_Label.TLabel', background='DeepSkyBlue', font=('times, 12'))
-sec_label = Label(timer_frame, style='Sec_Label.TLabel', text='sec', background='DeepSkyBlue')
+sec_label = timer_entry.sec_label_gen(timer_frame)
 sec_label.pack(side=LEFT)
 sec = StringVar()
-sec_entry = Entry(timer_frame, textvariable=sec, width=2, font=('times, 12'))
+sec_entry = timer_entry.sec_entry_gen(timer_frame, sec)
 sec_entry.pack(side=LEFT)
 
 sec.set('00')
