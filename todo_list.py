@@ -1,4 +1,5 @@
 import task_list
+import task_buttons
 from cgitb import text
 from tkinter import *
 from tkinter import messagebox
@@ -75,7 +76,8 @@ todo.title('To Do List')
 todo.config(bg = 'DeepSkyBlue')
 todo.resizable(width=True, height=True)
 
-# task list + scrollbar palcement
+# task list + scrollbar palcement. task list settings can be found in task_list.py
+
 task_list_frame = Frame(todo)
 task_list_frame.pack(pady=10)
 task_list_widget = task_list.task_list_gen(task_list_frame)
@@ -94,44 +96,15 @@ my_entry = Entry(
 my_entry.pack(pady=5)
 
 # add and delete task buttons to call their respctive functions on tasks in the entry area or the listbox area
+# add and delete task button settings can be found in task_buttons.py
 
 button_frame = Frame(todo)
 button_frame.pack(pady=5)
 
-add_task_style = ttk.Style()
-# add_task_style.theme_use('default')
-add_task_style.configure(
-    'Add_Task.TButton',
-    background='green2',
-    font=('times 14'),
-    padx=20,
-    pady=10,
-    relief='raised',
-    bordercolor='green2'
-)
-# add_task_style.map('Add_Task.TButton', background=[('active','green2')])
-addTask_btn = Button(
-    button_frame,
-    text='Add Task',
-    command=newTask,
-    style='Add_Task.TButton'
-)
+addTask_btn = task_buttons.addTask_btn_gen(button_frame, newTask)
 addTask_btn.pack(fill=BOTH, expand=True, side=LEFT)
 
-del_task_style = ttk.Style()
-del_task_style.configure(
-    'Del_Task.TButton',
-    background='red',
-    font=('times 14'),
-    padx=20,
-    pady=10
-)
-delTask_btn = Button(
-    button_frame,
-    text='Delete Task',
-    command=deleteTask,
-    style='Del_Task.TButton'
-)
+delTask_btn = task_buttons.delTask_btn_gen(button_frame, deleteTask)
 delTask_btn.pack(fill=BOTH, expand=True, side=LEFT)
 
 # creating the 3 entry fields for the timer
