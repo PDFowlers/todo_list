@@ -1,6 +1,7 @@
 import task_list
 import task_buttons
 import timer_entry
+import recurring_checkbox
 from cgitb import text
 from tkinter import *
 from tkinter import messagebox
@@ -136,27 +137,14 @@ sec.set('00')
 min.set('00')
 hours.set('00')
 
-# this checkbox will allow the timer to automatically reset to the start every time it ends, allowing instant re-use of the same timer
-make_recurring = ttk.Style()
-make_recurring.configure(
-    'Recurring.TCheckbutton',
-    foreground='black',
-    background='DeepSkyBlue'
-)
+# checkbox to make the set timer restart immediately after it completes
+# recurring checkbox settings can be found in recurring_checkbox.py
+
 recurring_check = Frame(todo)
 recurring_check.pack(pady=5)
 recurring_on = IntVar()
-
-recurring_checkbox = Checkbutton(
-    recurring_check,
-    text='Make Recurring',
-    variable=recurring_on,
-    onvalue=1,
-    offvalue=0,
-    style='Recurring.TCheckbutton'
-)
-
-recurring_checkbox.pack()
+make_recurring_checkbox = recurring_checkbox.make_recurring_checkbox_gen(recurring_check, recurring_on)
+make_recurring_checkbox.pack()
 
 # start and stop buttons for the timer
 
