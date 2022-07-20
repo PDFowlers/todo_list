@@ -2,6 +2,7 @@ import task_list
 import task_buttons
 import timer_entry
 import recurring_checkbox
+import timer_buttons
 from cgitb import text
 from tkinter import *
 from tkinter import messagebox
@@ -18,10 +19,10 @@ from threading import Thread
 # newTask and deleteTask are the fucntions called when pressing the Add and Delete task buttons respectively
 
 def newTask():
-    task = my_entry.get()
+    task = task_entry.get()
     if task != "":
         task_list_widget.insert(END, task)
-        my_entry.delete(0, "end")
+        task_entry.delete(0, "end")
     else:
         messagebox.showwarning("warning", "Please enter some task.")
 
@@ -57,14 +58,14 @@ def countdowntimer():
             hours.set('00')
         times -= 1
 
-def start_timer():
+def start_timer_func():
     global timer_on
     timer_on = True
     timer_start = Thread(target=countdowntimer)
     timer_start.start()
 
 
-def reset_timer():
+def reset_timer_func():
     global timer_on
     timer_on = False
     sec.set('00')
@@ -78,7 +79,8 @@ todo.title('To Do List')
 todo.config(bg = 'DeepSkyBlue')
 todo.resizable(width=True, height=True)
 
-# task list + scrollbar palcement. task list settings can be found in task_list.py
+# task list + scrollbar palcement. 
+# task list and task entry settings can be found in task_list.py
 
 task_list_frame = Frame(todo)
 task_list_frame.pack(pady=10)
@@ -89,13 +91,8 @@ sb.pack(side=RIGHT, fill=BOTH)
 task_list_widget.config(yscrollcommand=sb.set)
 sb.config(command=task_list_widget.yview)
 
-# task entry area
-my_entry = Entry(
-    todo,
-    font=('times', 14)
-    )
-
-my_entry.pack(pady=5)
+task_entry = task_list.task_entry_gen(todo)
+task_entry.pack(pady=5)
 
 # add and delete task buttons to call their respctive functions on tasks in the entry area or the listbox area
 # add and delete task button settings can be found in task_buttons.py
@@ -109,7 +106,8 @@ addTask_btn.pack(fill=BOTH, expand=True, side=LEFT)
 delTask_btn = task_buttons.delTask_btn_gen(button_frame, deleteTask)
 delTask_btn.pack(fill=BOTH, expand=True, side=LEFT)
 
-# creating the 3 entry fields for the timer
+# hour, minute, and second entry fields
+# settings for the timer entry fields can be found in timer_entry.py
 
 timer_frame = Frame(todo)
 timer_frame.pack(pady=5) 
@@ -146,45 +144,16 @@ recurring_on = IntVar()
 make_recurring_checkbox = recurring_checkbox.make_recurring_checkbox_gen(recurring_check, recurring_on)
 make_recurring_checkbox.pack()
 
-# start and stop buttons for the timer
+# start and reset buttons for the timer
+# start and reset button settings can be found in timer_buttons.py
 
 button_frame = Frame(todo)
 button_frame.pack(pady=5)
 
-start_timer_style = ttk.Style()
-# add_task_style.theme_use('default')
-start_timer_style.configure(
-    'Start.TButton',
-    background='green2',
-    font=('times 14'),
-    padx=20,
-    pady=10,
-    relief='raised',
-    bordercolor='green2'
-)
-# add_task_style.map('Add_Task.TButton', background=[('active','green2')])
-start_timer = Button(
-    button_frame,
-    text='Start Timer',
-    command=start_timer,
-    style='Start.TButton'
-)
+start_timer = timer_buttons.start_timer_gen(button_frame, start_timer_func)
 start_timer.pack(fill=BOTH, expand=True, side=LEFT)
 
-reset_timer_style = ttk.Style()
-reset_timer_style.configure(
-    'Reset.TButton',
-    background='red',
-    font=('times 14'),
-    padx=20,
-    pady=10
-)
-reset_timer = Button(
-    button_frame,
-    text='Reset Timer',
-    command=reset_timer,
-    style='Reset.TButton'
-)
+reset_timer = timer_buttons.reset_timer_gen(button_frame, reset_timer_func)
 reset_timer.pack(fill=BOTH, expand=True, side=LEFT)
 
 if __name__ == '__main__':

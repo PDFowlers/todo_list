@@ -2,7 +2,7 @@ from tkinter import *
 from tkinter import ttk
 from tkinter.ttk import *
 
-# task_buttons.py contains the style and config settings for the add and delete task buttons
+# recurring_checkbox.py contains style and config information for the make recurring checkbox
 
 def make_recurring_style_gen():
     make_recurring = ttk.Style()

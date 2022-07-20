@@ -16,3 +16,10 @@ def task_list_gen(frame):
         font=('Times', 18)
     )
     return task_list
+
+def task_entry_gen(frame):
+    task_entry = Entry(
+        frame,
+        font=('times', 14)
+        )
+    return task_entry
