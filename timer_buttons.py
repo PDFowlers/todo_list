@@ -1,6 +1,8 @@
 from tkinter import *
 from tkinter import ttk
 from tkinter.ttk import *
+import time
+from threading import Thread
 
 # timer_buttons.py contains style and config settings for the start and reset timer buttons
 
@@ -45,3 +47,25 @@ def reset_timer_gen(frame, cmd):
         style=reset_timer_style_gen()
     )
     return reset_timer
+
+def add_timer_style_gen():
+    add_timer_style = ttk.Style()
+    add_timer_style.configure(
+        'Add.TButton',
+        background='green2',
+        font=('times 14'),
+        padx=20,
+        pady=10,
+        relief='raised',
+        bordercolor='green2'
+    )
+    return 'Start.TButton'
+
+def add_timer_gen(frame, cmd):
+    add_timer = Button(
+        frame,
+        text='Add Timer',
+        command=cmd,
+        style=add_timer_style_gen()
+    )
+    return add_timer

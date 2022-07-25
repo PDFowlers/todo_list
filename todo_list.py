@@ -1,8 +1,10 @@
+from logging import root
 import task_list
 import task_buttons
 import timer_entry
 import recurring_checkbox
 import timer_buttons
+import Timer
 from cgitb import text
 from tkinter import *
 from tkinter import messagebox
@@ -29,55 +31,33 @@ def newTask():
 def deleteTask():
     task_list_widget.delete(ANCHOR)
 
-def countdowntimer():
-    init_sec = int(sec.get())
-    init_min = int(min.get())
-    init_hours = int(hours.get())
-    times = int(hours.get())*3600+ int(min.get())*60 + int(sec.get())
-    while times > -1:
-        if timer_on != True:
-            break
-        minute,second = (times // 60 , times % 60)
-        hour =0
-        if minute > 60:
-            hour , minute = (minute // 60 , minute % 60)
-        sec.set(second)
-        min.set(minute)
-        hours.set(hour)
-        #Update the time
-        todo.update()
-        time.sleep(1)
-        if(times == 0):
-            if recurring_on.get() == 1:
-                sec.set(init_sec)
-                min.set(init_min)
-                hours.set(init_hours)
-                countdowntimer()
-            sec.set('00')
-            min.set('00')
-            hours.set('00')
-        times -= 1
+def add_timer_func():
+    new_tab_frame = ttk.Frame(todo_list_notebook, width=300, height=500)
+    new_tab_frame.pack(fill='both', expand=True)
 
-def start_timer_func():
-    global timer_on
-    timer_on = True
-    timer_start = Thread(target=countdowntimer)
-    timer_start.start()
+    todo_list_notebook.add(new_tab_frame, text=task_list_widget.get(ANCHOR))
+    tab_name = task_list_widget.get(ANCHOR)
 
-
-def reset_timer_func():
-    global timer_on
-    timer_on = False
-    sec.set('00')
-    min.set('00')
-    hours.set('00')
+    Timer.NewTimer(new_tab_frame, tab_name)
 
 # initial Tk instance setup
-todo = Tk()
-todo.geometry('300x500+0+0')
-todo.title('To Do List')
-todo.config(bg = 'DeepSkyBlue')
-todo.resizable(width=True, height=True)
+root = Tk()
+root.geometry('300x500+0+0')
+root.title('To Do List')
+root.config(bg = 'DeepSkyBlue')
+root.resizable(width=True, height=True)
+
+# first notebook tab creation
+
+todo_tab_style = Style()
+todo_tab_style.configure('Todo.TNotebook', background='DeepSkyBlue', foreground='DeepSkyBlue', font=('times, 12'))
+todo_list_notebook = Notebook(root, style='Todo.TNotebook')
+todo_list_notebook.pack(pady=5)
+
+todo = Frame(todo_list_notebook, width=300, height=500, style='Todo.Tab')
+todo.pack(fill='both', expand=True)
+
+todo_list_notebook.add(todo, text='To-Do List')
 
 # task list + scrollbar palcement. 
 # task list and task entry settings can be found in task_list.py
@@ -106,55 +86,18 @@ addTask_btn.pack(fill=BOTH, expand=True, side=LEFT)
 delTask_btn = task_buttons.delTask_btn_gen(button_frame, deleteTask)
 delTask_btn.pack(fill=BOTH, expand=True, side=LEFT)
 
-# hour, minute, and second entry fields
-# settings for the timer entry fields can be found in timer_entry.py
+# add timer button
 
-timer_frame = Frame(todo)
-timer_frame.pack(pady=5) 
+add_timer_frame = Frame(todo)
+add_timer_frame.pack(pady=5)
 
+add_timer_button = timer_buttons.add_timer_gen(add_timer_frame, add_timer_func)
+add_timer_button.pack(fill=BOTH, expand=True, side=LEFT)
 
-hr_label = timer_entry.hr_label_gen(timer_frame)
-hr_label.pack(side=LEFT)
-hours = StringVar()
-hr_entry = timer_entry.hr_entry_gen(timer_frame, hours)
-hr_entry.pack(side=LEFT)
-
-min_label = timer_entry.min_label_gen(timer_frame)
-min_label.pack(side=LEFT)
-min = StringVar()
-min_entry = timer_entry.min_entry_gen(timer_frame, min)
-min_entry.pack(side=LEFT)
-
-sec_label = timer_entry.sec_label_gen(timer_frame)
-sec_label.pack(side=LEFT)
 sec = StringVar()
-sec_entry = timer_entry.sec_entry_gen(timer_frame, sec)
-sec_entry.pack(side=LEFT)
-
-sec.set('00')
-min.set('00')
-hours.set('00')
-
-# checkbox to make the set timer restart immediately after it completes
-# recurring checkbox settings can be found in recurring_checkbox.py
-
-recurring_check = Frame(todo)
-recurring_check.pack(pady=5)
+min = StringVar()
+hours = StringVar()
 recurring_on = IntVar()
-make_recurring_checkbox = recurring_checkbox.make_recurring_checkbox_gen(recurring_check, recurring_on)
-make_recurring_checkbox.pack()
-
-# start and reset buttons for the timer
-# start and reset button settings can be found in timer_buttons.py
-
-button_frame = Frame(todo)
-button_frame.pack(pady=5)
-
-start_timer = timer_buttons.start_timer_gen(button_frame, start_timer_func)
-start_timer.pack(fill=BOTH, expand=True, side=LEFT)
-
-reset_timer = timer_buttons.reset_timer_gen(button_frame, reset_timer_func)
-reset_timer.pack(fill=BOTH, expand=True, side=LEFT)
 
 if __name__ == '__main__':
     todo.mainloop()
