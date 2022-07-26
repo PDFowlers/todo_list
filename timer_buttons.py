@@ -52,14 +52,12 @@ def add_timer_style_gen():
     add_timer_style = ttk.Style()
     add_timer_style.configure(
         'Add.TButton',
-        background='green2',
+        background='DeepSkyBlue',
         font=('times 14'),
         padx=20,
-        pady=10,
-        relief='raised',
-        bordercolor='green2'
+        pady=10
     )
-    return 'Start.TButton'
+    return 'Add.TButton'
 
 def add_timer_gen(frame, cmd):
     add_timer = Button(

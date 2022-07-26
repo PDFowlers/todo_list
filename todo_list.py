@@ -1,11 +1,9 @@
-from logging import root
 import task_list
 import task_buttons
 import timer_entry
 import recurring_checkbox
 import timer_buttons
 import Timer
-from cgitb import text
 from tkinter import *
 from tkinter import messagebox
 from tkinter import ttk
@@ -32,13 +30,17 @@ def deleteTask():
     task_list_widget.delete(ANCHOR)
 
 def add_timer_func():
-    new_tab_frame = ttk.Frame(todo_list_notebook, width=300, height=500)
-    new_tab_frame.pack(fill='both', expand=True)
+    if task_list_widget.get(ANCHOR) != '':
+        new_tab_frame = ttk.Frame(todo_list_notebook, width=300, height=500)
+        new_tab_frame.pack(fill='both', expand=True)
 
-    todo_list_notebook.add(new_tab_frame, text=task_list_widget.get(ANCHOR))
-    tab_name = task_list_widget.get(ANCHOR)
+        todo_list_notebook.add(new_tab_frame, text=task_list_widget.get(ANCHOR))
+        tab_name = task_list_widget.get(ANCHOR)
 
-    Timer.NewTimer(new_tab_frame, tab_name)
+        Timer.NewTimer(new_tab_frame, tab_name)
+    
+    else:
+        messagebox.showwarning("warning", "Please select a task.")
 
 # initial Tk instance setup
 root = Tk()
@@ -64,8 +66,10 @@ todo_list_notebook.add(todo, text='To-Do List')
 
 task_list_frame = Frame(todo)
 task_list_frame.pack(pady=10)
+
 task_list_widget = task_list.task_list_gen(task_list_frame)
 task_list_widget.pack(side=LEFT, fill=BOTH)
+
 sb = Scrollbar(task_list_frame)
 sb.pack(side=RIGHT, fill=BOTH)
 task_list_widget.config(yscrollcommand=sb.set)
@@ -93,11 +97,6 @@ add_timer_frame.pack(pady=5)
 
 add_timer_button = timer_buttons.add_timer_gen(add_timer_frame, add_timer_func)
 add_timer_button.pack(fill=BOTH, expand=True, side=LEFT)
-
-sec = StringVar()
-min = StringVar()
-hours = StringVar()
-recurring_on = IntVar()
 
 if __name__ == '__main__':
     todo.mainloop()
