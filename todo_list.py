@@ -10,8 +10,7 @@ from tkinter import ttk
 from tkinter.ttk import *
 import time
 from threading import Thread
-
-
+from playsound import playsound
 
 # todo_list.py will launch an application that can be used as a to-do list
 # the application will store tasks or items to remember, sorted by priority, and have alarms to remind the user of certain tasks
@@ -42,6 +41,9 @@ def add_timer_func():
     else:
         messagebox.showwarning("warning", "Please select a task.")
 
+def alarm():
+    playsound('alarm_sound_1.WAV')
+
 # initial Tk instance setup
 root = Tk()
 root.geometry('300x500+0+0')
@@ -52,8 +54,8 @@ root.resizable(width=True, height=True)
 # first notebook tab creation
 
 todo_tab_style = Style()
-todo_tab_style.configure('Todo.TNotebook', background='DeepSkyBlue', foreground='DeepSkyBlue', font=('times, 12'))
-todo_list_notebook = Notebook(root, style='Todo.TNotebook')
+todo_tab_style.configure('TNotebook', background='DeepSkyBlue', foreground='DeepSkyBlue', font=('times, 12'))
+todo_list_notebook = Notebook(root, style='TNotebook')
 todo_list_notebook.pack(pady=5)
 
 todo = Frame(todo_list_notebook, width=300, height=500, style='Todo.Tab')

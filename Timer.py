@@ -6,6 +6,8 @@ from threading import Thread
 import recurring_checkbox
 import timer_entry
 import timer_buttons
+from tkinter import messagebox
+from playsound import playsound
 
 # timer_buttons.py contains style and config settings for the start and reset timer buttons
 
@@ -14,11 +16,7 @@ class NewTimer():
         
         self.tab_name = tab_name
         self.tab = tab
-        # root = Tk()
-        # root.geometry('300x500+0+0')
-        # root.title(self.tab_name)
-        # root.config(bg = 'DeepSkyBlue')
-        
+
         self.sec = StringVar()
         self.min = StringVar()
         self.hours = StringVar()
@@ -93,6 +91,7 @@ class NewTimer():
             self.new_tab_frame.update()
             time.sleep(1)
             if(times == 0):
+                self.alarm()
                 if self.recurring_on.get() == 1:
                     self.sec.set(init_sec)
                     self.min.set(init_min)
@@ -101,6 +100,7 @@ class NewTimer():
                 self.sec.set('00')
                 self.min.set('00')
                 self.hours.set('00')
+                # messagebox.showinfo('Alert', f'{self.tab_name}')
             times -= 1
     
     def start_timer_func(self):
@@ -113,6 +113,9 @@ class NewTimer():
         self.sec.set('00')
         self.min.set('00')
         self.hours.set('00')
+    
+    def alarm(self):
+        playsound(u'E:\Programming\\todo_list\\alarm_sound_1.mp3')
         
 
 if __name__ == '__main__':
