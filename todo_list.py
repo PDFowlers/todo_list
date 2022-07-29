@@ -26,6 +26,10 @@ def newTask():
         messagebox.showwarning("warning", "Please enter some task.")
 
 def deleteTask():
+    for tab in todo_list_notebook.winfo_children():
+        if str(tab) == str(task_list_widget.get(ANCHOR)):
+            tab.destroy()
+            break
     task_list_widget.delete(ANCHOR)
 
 def add_timer_func():
@@ -40,9 +44,6 @@ def add_timer_func():
     
     else:
         messagebox.showwarning("warning", "Please select a task.")
-
-def alarm():
-    playsound('alarm_sound_1.WAV')
 
 # initial Tk instance setup
 root = Tk()
